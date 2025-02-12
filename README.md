@@ -84,6 +84,13 @@ https://github.com/mkubecek/vmware-host-modules/issues/239#top
 
 https://blog.csdn.net/washingtin/article/details/128700510
 
+
+## 信创操作系统安装
+
+[方德桌面操作系统V5.0（X86版） ](https://www.nfschina.com/index.php?catid=68)
+
+[统信UOS桌面专业版AMD64（1070 HWE版本）](https://www.chinauos.com/resource/download-professional)
+
 ---
 
 This repository tracks patches needed to build VMware (Player and
