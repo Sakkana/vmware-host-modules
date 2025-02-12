@@ -79,6 +79,13 @@ Failed to stop vmware.service: Unit vmware.service not loaded.
 Unable to stop services
 ```
 
+## 参考链接 🔗
+https://github.com/mkubecek/vmware-host-modules/issues/239#top
+
+https://blog.csdn.net/washingtin/article/details/128700510
+
+---
+
 This repository tracks patches needed to build VMware (Player and
 Workstation) host modules against recent kernels. As it focuses on recent
 kernels (older ones do not need patching), only vmmon and vmnet modules are
