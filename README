@@ -1,3 +1,84 @@
+## 修复 VMWARE 虚拟机缺少 vmmon 内核模块的问题
+
+```bash
+uname -r
+```
+宿主机版本：Archlinux 内核版本 6.13.2-arch1-1
+
+```bash
+vmware --version
+```
+虚拟机版本：VMware Workstation 17.5.1 build-23298084
+
+```bash
+sudo pacman -S base-devel linux-headers
+```
+
+编译 vmmon
+```bash
+# 切换到对应的分支
+git pull origin workstation-17.5.1
+sudo make
+sudo make install
+```
+
+直接编译会出问题，修改部分代码
+
+将 `vmnet-only/vmnetInt.h` 中的宏定义
+```c
+#define dev_lock_list()    read_lock(&dev_base_lock)
+#define dev_unlock_list()  read_unlock(&dev_base_lock)
+```
+
+修改为如下
+```c
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 9, 9)
+#  define dev_lock_list() rcu_read_lock()
+#  define dev_unlock_list() rcu_read_unlock()
+#else
+#   define dev_lock_list()    read_lock(&dev_base_lock)
+#   define dev_unlock_list()  read_unlock(&dev_base_lock)
+#endif
+```
+
+再重新 make, 就没有问题了。
+编译安装完成后，加载 vmmon 和 vmnet 模块
+```bash
+sudo modprobe vmmon
+sudo modprobe vmnet
+```
+
+设置开机自动加载
+```bash
+sudo tee /etc/modules-load.d/vmware.conf <<EOF
+vmmon
+vmnet
+EOF
+```
+
+这时候执行就可以看到这个模块了。
+```bash
+lsmod | grep -E 'vmmon|vmnet'
+```
+
+```bash
+vmnet                  81920  0
+vmmon                 172032  0
+```
+
+
+不知道为什么使用 vmware 自带命令不行。
+```bash
+sudo vmware-modconfig --console --install-all
+```
+
+该服务不叫这个名字了吗？
+```bash
+[AppLoader] GLib does not have GSettings support.
+Failed to stop vmware.service: Unit vmware.service not loaded.
+Unable to stop services
+```
+
 This repository tracks patches needed to build VMware (Player and
 Workstation) host modules against recent kernels. As it focuses on recent
 kernels (older ones do not need patching), only vmmon and vmnet modules are
