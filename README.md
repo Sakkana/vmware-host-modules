@@ -79,11 +79,18 @@ Failed to stop vmware.service: Unit vmware.service not loaded.
 Unable to stop services
 ```
 
+后来发现直接使用本机的 QMUE/kVM 就行了。。。
+
+比 VMWARE 方便很多，速度还快。
+
 ## 参考链接 🔗
 https://github.com/mkubecek/vmware-host-modules/issues/239#top
 
 https://blog.csdn.net/washingtin/article/details/128700510
 
+https://ivonblog.com/posts/archlinux-qemu-virt-manager/
+
+https://www.cnblogs.com/suxiuf/p/17586593.html
 
 ## 信创操作系统安装
 
